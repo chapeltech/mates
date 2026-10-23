@@ -1,0 +1,21 @@
+# Replace the hostname, certificate paths, and authentication mechanism for the
+# deployment. Only nginx should be able to reach the mates backend.
+server {
+    listen 443 ssl;
+    server_name mates.example.com;
+    ssl_certificate /etc/letsencrypt/live/mates.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mates.example.com/privkey.pem;
+    client_max_body_size 10m;
+
+    location = /.well-known/carddav { return 308 /dav/; }
+    location = /.well-known/caldav { return 308 /dav/; }
+
+    location / {
+        auth_basic "mates";
+        auth_basic_user_file /etc/nginx/mates.htpasswd;
+        proxy_set_header X-REMOTE-USER $remote_user;
+        proxy_set_header Authorization "";
+        proxy_set_header Host $host;
+        proxy_pass http://127.0.0.1:8099;
+    }
+}

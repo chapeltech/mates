@@ -1,0 +1,13 @@
+{
+  "name": "mates",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:ui": "cd frontend && ELM_HOME=../.elm-home elm make src/Main.elm --optimize --output=main.js",
+    "test:ui": "cd frontend && ELM_HOME=../.elm-home elm-test"
+  },
+  "devDependencies": {
+    "elm": "0.19.1-6",
+    "elm-test": "^0.19.1-revision17"
+  }
+}

@@ -1,0 +1,101 @@
+cabal-version: 3.0
+name: mates
+version: 0.1.0.0
+license: NONE
+author: mates contributors
+maintainer: mates contributors
+build-type: Simple
+synopsis: Command line vCard, iCalendar, and DAV manager
+description:
+  mates is a command line and service-oriented vCard/iCalendar manipulation
+  tool intended to manage contacts, calendars, and TODOs through DAV protocols
+  while keeping local cache support for offline use.
+
+common warnings
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wmissing-export-lists
+    -Wmissing-home-modules
+    -Wpartial-fields
+    -Wredundant-constraints
+  default-language: Haskell2010
+
+library
+  import: warnings
+  hs-source-dirs: src
+  exposed-modules:
+    Mates.App
+    Mates.Digest
+    Mates.Transport
+    Mates.CalendarNative
+    Mates.Cache
+    Mates.CardDAV
+    Mates.Config
+    Mates.ICalendar
+    Mates.Server
+    Mates.Server.API
+    Mates.Server.ClientProfile
+    Mates.Server.DAV
+    Mates.Server.Database
+    Mates.Server.Security
+    Mates.Server.Protocol
+    Mates.Server.Condition
+    Mates.Server.Xml
+    Mates.Server.Render
+    Mates.Server.Static
+    Mates.Server.Store
+    Mates.Server.Types
+    Mates.VCard
+  c-sources: cbits/transport.c cbits/calendar.c
+  cc-options: -Wall -Wextra
+  extra-libraries: pthread
+  pkgconfig-depends: libcurl >= 7.85, libical >= 3.0 && < 4
+  build-depends:
+    aeson,
+    base >= 4.18 && < 5,
+    bytestring,
+    cryptohash-sha256,
+    base64-bytestring,
+    directory >= 1.3 && < 1.4,
+    filepath >= 1.4 && < 1.6,
+    http-types,
+    postgresql-simple >= 0.7,
+    servant,
+    servant-server,
+    tagged,
+    text,
+    time >= 1.9 && < 1.16,
+    wai,
+    warp,
+    xml-conduit,
+    unicode-transforms,
+    containers,
+    network,
+    network-uri,
+    case-insensitive
+
+executable mates
+  import: warnings
+  hs-source-dirs: app
+  main-is: Main.hs
+  ghc-options:
+    -threaded
+  build-depends:
+    base >= 4.18 && < 5,
+    mates
+
+test-suite mates-test
+  import: warnings
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is: Main.hs
+  build-depends:
+    base >= 4.18 && < 5,
+    bytestring,
+    mates,
+    postgresql-simple >= 0.7,
+    text

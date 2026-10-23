@@ -1,0 +1,11 @@
+dist-newstyle/
+.ghc.environment.*
+*.hi
+*.o
+*.dyn_hi
+*.dyn_o
+.hie/
+frontend/elm-stuff/
+frontend/main.js
+.elm-home/
+node_modules/
